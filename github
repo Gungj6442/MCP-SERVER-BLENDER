@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Установка Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Установка зависимостей
+      run: |
+        pip install -e .
+        pip install pytest black isort mypy
+    
+    - name: Проверка форматирования
+      run: |
+        black --check src/
+        isort --check-only src/
+    
+    - name: Запуск тестов
+      run: |
+        pytest tests/
