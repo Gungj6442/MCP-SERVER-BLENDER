@@ -1,0 +1,23 @@
+"""Тесты для MCP сервера."""
+
+import pytest
+import json
+from src.server import server
+from src.blender_bridge import BlenderBridge
+
+
+def test_list_tools():
+    """Проверка списка инструментов."""
+    tools = server.list_tools()
+    assert len(tools) > 0
+    tool_names = [t.name for t in tools]
+    assert "create_object" in tool_names
+    assert "render_image" in tool_names
+
+
+def test_blender_bridge_script():
+    """Проверка выполнения скриптов."""
+    bridge = BlenderBridge()
+    # Простой скрипт
+    result = bridge._run_script("print('test')")
+    assert result is not None
